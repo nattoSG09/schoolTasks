@@ -78,6 +78,10 @@ public:
 	/// <param name="pTarget"></param>
 	void RoundRobin(GameObject* pTarget);
 
+	//‰½‚©‚É“–‚½‚Á‚½
+	//ˆø”FpTarget “–‚½‚Á‚½‘Šè
+	virtual void OnCollision(GameObject* pTarget){}
+
 	template <class T>
 	T* Instantiate(GameObject* parent)
 	{

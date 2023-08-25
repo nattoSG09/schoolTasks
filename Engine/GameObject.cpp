@@ -140,6 +140,7 @@ float GetVectorLength(const XMVECTOR& vector)
 
 	return length;
 }
+
 void GameObject::Collision(GameObject* _pTarget)
 {
 	//ターゲットにコライダーがアタッチされていない
@@ -149,7 +150,7 @@ void GameObject::Collision(GameObject* _pTarget)
 	float dist = GetVectorLength(XMVectorSubtract(XMLoadFloat3(&_pTarget->transform_.position_),XMLoadFloat3(&this->transform_.position_)));
 	float rDist = (this->pCollider_->GetRadius() + _pTarget->pCollider_->GetRadius()) * (this->pCollider_->GetRadius() + _pTarget->pCollider_->GetRadius());
 	if (dist <= rDist) {
-		float p = 5;
+		OnCollision(_pTarget);
 	}
 }
 
