@@ -13,10 +13,6 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	if (Input::IsKeyDown(DIK_SPACE)) {
-		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-		pSceneManager->ChangeScene(SCENE_ID_PLAY);
-	}
 }
 
 void TestScene::Draw()
