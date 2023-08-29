@@ -141,6 +141,7 @@ void Controller::Update()
     //    //現在地をベクトルからいつものtransform.position_にもどす
     //    XMStoreFloat3(&transform_.position_, VectorPos);
     //}
+
     ////□＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝□
 
     ////焦点の位置
