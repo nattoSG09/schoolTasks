@@ -7,7 +7,6 @@
 #include "Engine/Input.h"
 #include "Engine/Model.h"
 #include "Engine/RootJob.h"
-#include "DirectXCollision.h"
 
 #pragma comment(lib, "winmm.lib")
 
@@ -26,16 +25,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //エントリーポイント
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
 {
-	XMVECTOR vStart = XMVectorSet(1, 5, 1, 0);
-	XMVECTOR vDir = XMVectorSet(0, 1, 0, 0);
-	XMVECTOR p1 = XMVectorSet(0, 0, 0, 0);
-	XMVECTOR p2 = XMVectorSet(0, 0, 3, 0);
-	XMVECTOR p3 = XMVectorSet(3, 0, 0, 0);
-	float dist;
-
-	bool result = TriangleTests::Intersects(vStart, vDir, p1, p2, p3, dist);
-	int a = 0;
-
 	//ウィンドウクラス（設計図）を作成
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
@@ -83,6 +72,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	{
 		PostQuitMessage(0); //エラー起きたら強制終了
 	}
+
+	Fbx* pFbx = new Fbx;
+	pFbx->Load("Assets/MapEditor/BoxDefault.fbx");
+	RayCastData data;
+	data.start = { 0,5,0 };
+	data.dir = XMVectorSet(0, -1, 0, 0);
+	pFbx->RayCast(data);
+
+	int a;
+
 
 	//カメラの初期化
 	Camera::Initialize();

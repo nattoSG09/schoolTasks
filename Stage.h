@@ -18,6 +18,7 @@ class Stage : public GameObject
 {
 private:
 	int hModel_[MAX];
+
 	struct BlockData {
 		int type_;
 		int height_;
@@ -38,6 +39,13 @@ public:
 	/// <param name="_type">ブロックタイプ</param>
 	void SetBlock(int x, int z, int _type) { table_[x][z].type_ = _type; }
 
+
+	/// <summary>
+	/// 指定した位置のブロックな高さを設定する
+	/// </summary>
+	/// <param name="x">テーブル座標ｘ</param>
+	/// <param name="z">テーブル座標ｚ</param>
+	/// <param name="_height">高さ</param>
 	void SetBlockHeight(int x,int z,int _height){ table_[x][z].height_ = _height; }
 
 };

@@ -15,6 +15,16 @@ using std::vector;
 
 class Texture;
 
+struct RayCastData
+{
+	XMFLOAT3 start;
+	XMVECTOR dir;
+	bool	 hit;
+	float	 dist;
+	XMVECTOR normal;
+	XMFLOAT3 intersection;
+};
+
 class Fbx
 {
 	//マテリアル
@@ -39,6 +49,12 @@ class Fbx
 		XMVECTOR normal; //法線ベクトル
 	};
 
+	
+
+
+	VERTEX* pVertices_;
+	int** ppIndex_;
+
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数
 	int materialCount_;	//マテリアルの個数
@@ -59,4 +75,15 @@ public:
 	HRESULT Load(std::string fileName);
 	void    Draw(Transform& transform);
 	void    Release();
+	void RayCast(RayCastData& rayData);
 };
+
+
+//XMVECTORの変数をXMFLOAT3に変えて返してくれる
+static XMFLOAT3 VectorToFloat3(XMVECTOR v)
+{
+	XMFLOAT3 a;
+	XMStoreFloat3(&a, v);
+
+	return a;
+}
