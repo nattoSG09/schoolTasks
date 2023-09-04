@@ -140,7 +140,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* mesh)
 				//3’¸“_•ª
 				for (DWORD vertex = 0; vertex < 3; vertex++)
 				{
-					index[count] = mesh->GetPolygonVertex(poly, vertex);
+					ppIndex_[i][count] = mesh->GetPolygonVertex(poly, vertex);
 					count++;
 				}
 			}	

@@ -75,13 +75,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	Fbx* pFbx = new Fbx;
 	pFbx->Load("Assets/MapEditor/BoxDefault.fbx");
-	RayCastData data;
-	data.start = { 0,5,0 };
-	data.dir = XMVectorSet(0, -1, 0, 0);
-	pFbx->RayCast(data);
+	RayCastData ray;
+	ray.start = { 0,10,0 };
+	ray.dir = { 0,-1,0,0 };
+	pFbx->RayCast(ray);
 
 	int a;
-
 
 	//ƒJƒƒ‰‚Ì‰Šú‰»
 	Camera::Initialize();
