@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
-
+#include <Windows.h>
 
 
 namespace {
@@ -24,12 +24,17 @@ private:
 		int height_;
 	}table_[XSIZE][ZSIZE];
 
+	int mode_;		//0:上げる,1:下げる,2:変える
+	int select_;	//種類
+
 public:
 	Stage(GameObject* parent);
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
 	void Release() override;
+
+	BOOL DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	/// <summary>
 	/// 指定した位置にブロックを設定する

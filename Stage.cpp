@@ -2,6 +2,8 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 
+#include "resource.h"
+
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage")
 {
@@ -35,15 +37,15 @@ void Stage::Initialize()
     for (int x = 0; x < XSIZE; x++) {
         for (int z = 0; z < ZSIZE; z++) {
             SetBlock(x, z, (x%MAX));
-            SetBlockHeight(x, z, (x%3+1));
+            //SetBlockHeight(x, z, (x%3+1));
         }
     }
 
-    
 }
 
 void Stage::Update()
 {
+   
 }
 
 void Stage::Draw()
@@ -66,4 +68,27 @@ void Stage::Draw()
 
 void Stage::Release()
 {
+}
+
+//ダイアログプロシージャ―(偽物)
+BOOL Stage::DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_INITDIALOG://ダイアログ作成直後
+
+        //ラジオボタン初期化
+        SendMessage(GetDlgItem(hDig, IDC_RADIO_UP), BM_SETCHECK, BST_CHECKED, 0);
+
+        //コンボボックス初期化
+        SendMessage(GetDlgItem(hDig, IDC_COMBO3), CB_ADDSTRING, 0, (LPARAM)"Default");
+        SendMessage(GetDlgItem(hDig, IDC_COMBO3), CB_ADDSTRING, 0, (LPARAM)"Brick");
+        SendMessage(GetDlgItem(hDig, IDC_COMBO3), CB_ADDSTRING, 0, (LPARAM)"Grass");
+        SendMessage(GetDlgItem(hDig, IDC_COMBO3), CB_ADDSTRING, 0, (LPARAM)"Sand");
+        SendMessage(GetDlgItem(hDig, IDC_COMBO3), CB_ADDSTRING, 0, (LPARAM)"Water");
+        SendMessage(GetDlgItem(hDig, IDC_COMBO3), CB_SETCURSEL, 0, 0);
+
+        return TRUE;
+    }
+    return FALSE;
 }
