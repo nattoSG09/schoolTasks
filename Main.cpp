@@ -1,6 +1,7 @@
 //インクルード
 #include <Windows.h>
 #include <stdlib.h>
+#include "resource.h"
 
 #include "Engine/Direct3D.h"
 #include "Engine/Camera.h"
@@ -19,6 +20,7 @@ RootJob* pRootJob = nullptr;
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+BOOL CALLBACK DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 
@@ -73,15 +75,24 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		PostQuitMessage(0); //エラー起きたら強制終了
 	}
 
-	Fbx* pFbx = new Fbx;
-	pFbx->Load("Assets/MapEditor/BoxDefault.fbx");
-	RayCastData ray;
-	ray.start = { 0,10,0 };
-	ray.dir = { 0,-1,0,0 };
-	pFbx->RayCast(ray);
 
-	int a;
+	//レイキャストに関する処理
+	{
+		Fbx* pFbx = new Fbx;
+		pFbx->Load("Assets/MapEditor/BoxDefault.fbx");
+		RayCastData ray;
+		ray.start = { 0,10,0 };
+		ray.dir = { 0,-1,0,0 };
+		pFbx->RayCast(ray);
 
+		if (ray.hit)
+			MessageBox(NULL, "レイキャストがヒットしました", "hit!!", MB_OK);
+		else {
+			MessageBox(NULL, "レイキャストがヒットしませんでした", "not hit!!", MB_OK);
+		}
+	}
+
+	
 	//カメラの初期化
 	Camera::Initialize();
 
@@ -90,6 +101,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	pRootJob = new RootJob(nullptr);
 	pRootJob->Initialize();
+
+	//ダイアログウィンドウを作成
+	HWND hDlg = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DIALOG1),hWnd, (DLGPROC)DialogProc);
+
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -176,4 +191,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+//ダイアログプロシージャ―
+BOOL CALLBACK DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+	}
+	return FALSE;
 }
