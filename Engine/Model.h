@@ -42,5 +42,6 @@ namespace Model
 	/// </summary>
 	void Release();
 
+	void RayCast(int _hModel, RayCastData& _rayData);
 
 }

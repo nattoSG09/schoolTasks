@@ -1,7 +1,7 @@
 #include "Stage.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
-
+#include "Engine/Camera.h"
 #include "resource.h"
 
 Stage::Stage(GameObject* parent)
@@ -45,7 +45,36 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
-   
+    float w = (float)Direct3D::scrWidth_/2.0f;
+    float h = (float)Direct3D::scrHeight_/2.0f;
+
+
+    XMMATRIX vp =
+    {
+        w,0,0,0,
+        0,-h,0,0,
+        0,0,1,0,
+        w,h,0,1
+    };
+
+    //ビューポート行列
+    XMMATRIX invVp = XMMatrixInverse(nullptr, vp);
+    
+    //プロジェクション行列
+    XMMATRIX invProj = XMMatrixInverse(nullptr,Camera::GetProjectionMatrix());
+
+    //ビュー変換
+    XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
+
+    XMFLOAT3 mousePosFront = Input::GetMousePosition();
+    mousePosFront.z = 0.0f;
+
+    XMFLOAT3 mousePosBack = ;
+    mousePosBack.z = 1.0f;
+
+
+
+
 }
 
 void Stage::Draw()

@@ -79,7 +79,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	//レイキャストに関する処理
 	{
-		Fbx* pFbx = new Fbx;
+		/*Fbx* pFbx = new Fbx;
 		pFbx->Load("Assets/MapEditor/BoxDefault.fbx");
 		RayCastData ray;
 		ray.start = { 0,10,0 };
@@ -90,7 +90,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			MessageBox(NULL, "レイキャストがヒットしました", "hit!!", MB_OK);
 		else {
 			MessageBox(NULL, "レイキャストがヒットしませんでした", "not hit!!", MB_OK);
-		}
+		}*/
 	}
 
 	
@@ -201,6 +201,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 BOOL CALLBACK DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	//return dynamic_cast<Stage*>(pRootJob->FindObject("Stage"))->DialogProc(hDig, msg, wParam, lParam);
-
-	return ((Stage*)pRootJob->FindObject("Stage"))->DialogProc(hDig, msg, wParam, lParam);
+	Stage* ps = ((Stage*)pRootJob->FindObject("Stage"));
+	return ps->DialogProc(hDig, msg, wParam, lParam);
 }

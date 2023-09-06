@@ -67,3 +67,8 @@ void Model::Release()
 	}
 	modelList_.clear();
 }
+
+void Model::RayCast(int _hModel, RayCastData& _rayData)
+{
+	modelList_[_hModel]->fbx_->RayCast(_rayData);
+}

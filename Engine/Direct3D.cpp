@@ -22,6 +22,8 @@ namespace Direct3D
 		ID3D11RasterizerState* pRasterizerState_ = nullptr;	//ラスタライザー
 	};
 	SHADER_BUNDLE shaderBundle[SHADER_MAX];
+
+	
 }
 
 
@@ -29,6 +31,8 @@ namespace Direct3D
 //初期化
 HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
+	scrWidth_ = winW;scrHeight_ = winH;
+
 	HRESULT hr; //エラー処理用
 
 	///////////////////////////いろいろ準備するための設定///////////////////////////////
