@@ -93,7 +93,7 @@ void Stage::Update()
                 data.dir = vMPB - vMPF;
                 Model::RayCast(hModel_[0],data);
 
-                if (data.hit && Input::IsKey(DIK_T)) {
+                if (data.hit) {
                     int a = 0;
                 }
             }
