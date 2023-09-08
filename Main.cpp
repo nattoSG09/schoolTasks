@@ -191,7 +191,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);  //ÉvÉçÉOÉâÉÄèIóπ
 		return 0;
 	case WM_MOUSEMOVE:
-		Input::SetMousePosition(LOWORD(lParam),LOWORD(lParam));
+		Input::SetMousePosition(LOWORD(lParam), HIWORD(lParam));
 		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);

@@ -4,6 +4,7 @@
 RootJob::RootJob(GameObject* parent)
 	:GameObject(parent,"Rootjob")
 {
+	
 }
 
 RootJob::~RootJob()

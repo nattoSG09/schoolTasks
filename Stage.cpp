@@ -3,7 +3,7 @@
 #include "Engine/Input.h"
 #include "Engine/Camera.h"
 #include "resource.h"
-
+//#include <DirectXMath.h>
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage")
 {
@@ -12,7 +12,6 @@ Stage::Stage(GameObject* parent)
     for (int x = 0; x < XSIZE; x++){
         for (int z = 0; z < ZSIZE; z++) {
             SetBlock(x, z,DEFAULT);
-            SetBlockHeight(x, z, 1);
         }
     }
 }
@@ -45,6 +44,8 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
+    if (Input::IsMouseButtonDown(0))return;
+
     float w = (float)Direct3D::scrWidth_/2.0f;
     float h = (float)Direct3D::scrHeight_/2.0f;
 
@@ -66,15 +67,39 @@ void Stage::Update()
     //ビュー変換
     XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
 
+    //ワールド行列
+    XMMATRIX inyW;
+
+    //マウス座標(手前、奥を取得
     XMFLOAT3 mousePosFront = Input::GetMousePosition();
     mousePosFront.z = 0.0f;
-
-    XMFLOAT3 mousePosBack = ;
+    XMFLOAT3 mousePosBack = Input::GetMousePosition();
     mousePosBack.z = 1.0f;
 
+    //① mousePosFrontをベクトルに変換
+    //② ①にinvVP,invPrj,invViewをかける
+    XMVECTOR vMPF = XMVector3Transform(XMLoadFloat3(&mousePosFront), invVp* invProj* invView);
 
+    //③ mousePosBackをベクトルに変換
+    //④ ③にinvVP,invPrj,invViewをかける
+    XMVECTOR vMPB = XMVector3Transform(XMLoadFloat3(&mousePosBack), invVp * invProj * invView);
 
+    //table_上のモデルすべてとのレイキャスト判定を行う
+    for (int x = 0; x < 15; x++) {
+        for (int z = 0; z < 15; z++){
+            for (int y = 0; y < table_[x][z].height_ + 1; y++) {
+                RayCastData data;
+                XMStoreFloat3(&data.start, vMPF);
+                data.dir = vMPB - vMPF;
+                Model::RayCast(hModel_[0],data);
 
+                if (data.hit && Input::IsKey(DIK_T)) {
+                    int a = 0;
+                }
+            }
+        }
+    }
+    
 }
 
 void Stage::Draw()
@@ -83,7 +108,7 @@ void Stage::Draw()
 
     for (int width = 0; width < 15; width++){
         for (int depth = 0; depth < 15; depth++){
-            for (int height = 0; height < table_[width][depth].height_; height++) {
+            for (int height = 0; height < table_[width][depth].height_ + 1; height++) {
 
                 BlockTrans.position_ = { (float)width,(float)height,(float)depth };
                 int type = table_[width][depth].type_;
