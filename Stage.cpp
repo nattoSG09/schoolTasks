@@ -44,7 +44,7 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
-    if (Input::IsMouseButtonDown(0))return;
+    if (!Input::IsMouseButtonDown(0))return;
 
     float w = (float)Direct3D::scrWidth_/2.0f;
     float h = (float)Direct3D::scrHeight_/2.0f;
@@ -67,9 +67,6 @@ void Stage::Update()
     //ビュー変換
     XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
 
-    //ワールド行列
-    XMMATRIX inyW;
-
     //マウス座標(手前、奥を取得
     XMFLOAT3 mousePosFront = Input::GetMousePosition();
     mousePosFront.z = 0.0f;
@@ -90,11 +87,14 @@ void Stage::Update()
             for (int y = 0; y < table_[x][z].height_ + 1; y++) {
                 RayCastData data;
                 XMStoreFloat3(&data.start, vMPF);
-                data.dir = vMPB - vMPF;
-                Model::RayCast(hModel_[0],data);
-
+                XMStoreFloat3(&data.dir, XMVector3Normalize(vMPB - vMPF));
+                Transform t;
+                t.position_ = { (float)x,(float)y,(float)z };
+                Model::SetTransform(hModel_[0], t);
+                Model::RayCast(hModel_[0], data);
                 if (data.hit) {
-                    int a = 0;
+                    table_[x][z].height_++;
+                    break;
                 }
             }
         }
