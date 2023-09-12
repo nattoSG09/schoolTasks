@@ -27,7 +27,7 @@ namespace Input
 		//ƒ}ƒEƒX
 		pDInput_->CreateDevice(GUID_SysMouse, &pMouseDevice_, nullptr);
 		pMouseDevice_->SetDataFormat(&c_dfDIMouse);
-		pMouseDevice_->SetCooperativeLevel(hWnd_, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
+		pMouseDevice_->SetCooperativeLevel(hWnd_, DISCL_NONEXCLUSIVE);
 	}
 
 	void Update()
