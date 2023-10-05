@@ -35,6 +35,10 @@ public:
 	void Release() override;
 
 	BOOL DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam);
+	BOOL MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam);
+
+	void Save();
+	void Load();
 
 	/// <summary>
 	/// 指定した位置にブロックを設定する
@@ -43,7 +47,7 @@ public:
 	/// <param name="z">テーブル座標Y</param>
 	/// <param name="_type">ブロックタイプ</param>
 	void SetBlock(int x, int z, int _type) { table_[x][z].type_ = _type; }
-
+	int GetBlock(int x, int y) { return table_[x][y].type_; }
 
 	/// <summary>
 	/// 指定した位置のブロックな高さを設定する
@@ -52,6 +56,6 @@ public:
 	/// <param name="z">テーブル座標ｚ</param>
 	/// <param name="_height">高さ</param>
 	void SetBlockHeight(int x,int z,int _height){ table_[x][z].height_ = _height; }
-
+	int GetBlockHeight(int x, int z) { return table_[x][z].height_; }
 };
 

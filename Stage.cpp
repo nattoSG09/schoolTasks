@@ -3,7 +3,11 @@
 #include "Engine/Input.h"
 #include "Engine/Camera.h"
 #include "resource.h"
-//#include <DirectXMath.h>
+
+#include <string>
+#include <fstream>
+#include <sstream>
+
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage")
 {
@@ -39,7 +43,6 @@ void Stage::Initialize()
             //SetBlockHeight(x, z, (x%3+1));
         }
     }
-
 }
 
 void Stage::Update()
@@ -218,4 +221,63 @@ BOOL Stage::DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam)
         return TRUE;
     }
     return FALSE;
+}
+
+BOOL Stage::MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    int wmId = LOWORD(wParam); // メニューまたは制御の識別子
+    switch (msg)
+    {
+    case WM_COMMAND:
+        switch (wmId)
+        {
+        //case ID_MENU_SAVE:Save(); return 0;
+        //case ID_MENU_OPEN:Load(); return 0;
+        case ID_MENU_SAVE:PostQuitMessage(0);
+        }
+    }
+    return 0;
+}
+
+void Stage::Save()
+{
+    std::fstream oFile("Assets/blockData.csv",std::ios::out);
+
+    string outStr;
+    for (int x = 0; x < XSIZE; x++) {
+        for (int z = 0; z < ZSIZE; z++) {
+            outStr += (std::to_string(GetBlock(x, z)) + ',');
+            outStr += (std::to_string(GetBlockHeight(x, z))+',');
+        }
+    }
+
+    oFile << outStr;
+
+    oFile.close();
+}
+
+void Stage::Load()
+{
+    std::fstream iFile("Assets/blockData.csv", std::ios::in);
+    
+    int x = 0, z = 0;
+    // 1行ずつ読み込む
+    string line;
+    while (std::getline(iFile, line) && x < XSIZE) {
+        std::stringstream ss(line);
+        std::string token;
+        z = 0;
+        // コンマで区切られた各要素を取得して配列に追加
+        while (std::getline(ss, token, ',') && z < ZSIZE) {
+            std::stringstream elementStream(token);
+            std::string type, height;
+            std::getline(elementStream, type, '_');
+            std::getline(elementStream, height, '_');
+            table_[x][z].type_ = std::stoi(type);
+            table_[x][z].height_ = std::stoi(height);
+            z++;
+        }
+        x++;
+    }
+    iFile.close(); // ファイルを閉じる
 }
