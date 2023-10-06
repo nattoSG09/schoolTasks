@@ -231,12 +231,22 @@ BOOL Stage::MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         switch (wmId)
         {
-        //case ID_MENU_SAVE:Save(); return 0;
-        //case ID_MENU_OPEN:Load(); return 0;
-        case ID_MENU_SAVE:PostQuitMessage(0);
+        case ID_MENU_NEW:New(); return 0;
+        case ID_MENU_SAVE:Save(); return 0;
+        case ID_MENU_OPEN:Load(); return 0;
         }
     }
     return 0;
+}
+
+void Stage::New()
+{
+    for (int x = 0; x < XSIZE; x++) {
+        for (int z = 0; z < ZSIZE; z++) {
+            SetBlock(x, z, DEFAULT);
+            SetBlockHeight(x, z, DEFAULT);
+        }
+    }
 }
 
 void Stage::Save()
@@ -249,6 +259,7 @@ void Stage::Save()
             outStr += (std::to_string(GetBlock(x, z)) + ',');
             outStr += (std::to_string(GetBlockHeight(x, z))+',');
         }
+        outStr += "\n";
     }
 
     oFile << outStr;
@@ -259,25 +270,26 @@ void Stage::Save()
 void Stage::Load()
 {
     std::fstream iFile("Assets/blockData.csv", std::ios::in);
-    
+
+    std::string line;
     int x = 0, z = 0;
-    // 1行ずつ読み込む
-    string line;
-    while (std::getline(iFile, line) && x < XSIZE) {
+
+    while (std::getline(iFile, line)) {
         std::stringstream ss(line);
-        std::string token;
-        z = 0;
-        // コンマで区切られた各要素を取得して配列に追加
-        while (std::getline(ss, token, ',') && z < ZSIZE) {
-            std::stringstream elementStream(token);
-            std::string type, height;
-            std::getline(elementStream, type, '_');
-            std::getline(elementStream, height, '_');
-            table_[x][z].type_ = std::stoi(type);
-            table_[x][z].height_ = std::stoi(height);
-            z++;
+        std::string cell;
+
+        while (std::getline(ss, cell, ',')) {
+            // CSVから読み取ったデータを適切な型に変換し、
+            SetBlock(x, z, std::stoi(cell));
+            std::getline(ss, cell, ',');
+            SetBlockHeight(x, z, std::stoi(cell));
+
+            z++; // 次の列に進む
         }
-        x++;
+
+        x++; // 次の行に進む
+        z = 0; // 列をリセット
     }
-    iFile.close(); // ファイルを閉じる
+
+    iFile.close();
 }
