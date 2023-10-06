@@ -105,8 +105,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	pRootJob->Initialize();
 
 	//ダイアログウィンドウを作成
-	//HWND hDlg = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DIALOG1),hWnd, (DLGPROC)DialogProc);
-
+	HWND hDlg = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DIALOG1),hWnd, (DLGPROC)DialogProc);
+	ShowWindow(hDlg,false);
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;

@@ -234,6 +234,7 @@ BOOL Stage::MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam)
         case ID_MENU_NEW:New(); return 0;
         case ID_MENU_SAVE:Save(); return 0;
         case ID_MENU_OPEN:Load(); return 0;
+        case ID_MENU_NAME_SAVE: PostQuitMessage(0); return 0;
         }
     }
     return 0;
@@ -249,9 +250,9 @@ void Stage::New()
     }
 }
 
-void Stage::Save()
+void Stage::Save(string fileName)
 {
-    std::fstream oFile("Assets/blockData.csv",std::ios::out);
+    std::fstream oFile(fileName,std::ios::out);
 
     string outStr;
     for (int x = 0; x < XSIZE; x++) {
@@ -265,6 +266,11 @@ void Stage::Save()
     oFile << outStr;
 
     oFile.close();
+}
+
+void Stage::Save()
+{
+    Save("Assets/blockData.csv");
 }
 
 void Stage::Load()

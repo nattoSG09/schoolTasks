@@ -26,7 +26,6 @@ private:
 
 	int mode_;		//0:è„Ç∞ÇÈ,1:â∫Ç∞ÇÈ,2:ïœÇ¶ÇÈ
 	int select_;	//éÌóﬁ
-
 public:
 	Stage(GameObject* parent);
 	void Initialize() override;
@@ -38,6 +37,7 @@ public:
 	BOOL MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	void New();
+	void Save(string fileName);
 	void Save();
 	void Load();
 
