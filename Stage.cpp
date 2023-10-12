@@ -258,13 +258,11 @@ void Stage::Save()
         for (int x = 0; x < XSIZE; x++){
             for (int z = 0; z < ZSIZE; z++) {
                 outputFile.write((char*)&table_[x][z], sizeof(BlockData));
-                //outputFile.write((char*)&table_[x][z].height_, sizeof(int));
             }
         }
         outputFile.close();
     }
 }
-
 
 void Stage::Load()
 {
@@ -291,7 +289,6 @@ void Stage::Load()
         for (int x = 0; x < XSIZE; x++) {
             for (int z = 0; z < ZSIZE; z++) {
                 inputFile.read((char*)&table_[x][z], sizeof(BlockData));
-                //inputFile.read((char*)&table_[x][z].height_, sizeof(int));
             }
         }
         inputFile.close();
