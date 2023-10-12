@@ -34,11 +34,9 @@ public:
 	void Release() override;
 
 	BOOL DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam);
-	BOOL MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam);
-
 	void New();
-	void Save(string fileName);
-	void Save();
+	
+	void Save(HWND hwnd);
 	void Load();
 
 	/// <summary>

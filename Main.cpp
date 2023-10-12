@@ -186,6 +186,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 //ウィンドウプロシージャ（何かあった時によばれる関数）
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	int wmId = LOWORD(wParam);
 	switch (msg)
 	{
 	case WM_DESTROY:
@@ -196,7 +197,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_COMMAND:
 		Stage* ps = ((Stage*)pRootJob->FindObject("Stage"));
-		ps->MenuProc(hWnd, msg, wParam, lParam);
+		switch (wmId)
+		{
+		case ID_MENU_NEW:ps->New(); return 0;
+		case ID_MENU_SAVE:ps->Save(hWnd); return 0;
+		case ID_MENU_OPEN:ps->Load(); return 0;
+		}
 		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);

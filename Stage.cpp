@@ -223,21 +223,6 @@ BOOL Stage::DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam)
     return FALSE;
 }
 
-BOOL Stage::MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    int wmId = LOWORD(wParam); // メニューまたは制御の識別子
-    switch (msg)
-    {
-    case WM_COMMAND:
-        switch (wmId)
-        {
-        case ID_MENU_NEW:New(); return 0;
-        case ID_MENU_SAVE:Save(); return 0;
-        case ID_MENU_OPEN:Load(); return 0;
-        }
-    }
-    return 0;
-}
 
 void Stage::New()
 {
@@ -249,9 +234,38 @@ void Stage::New()
     }
 }
 
-void Stage::Save(string fileName)
+void Stage::Save(HWND hWnd)
 {
-    std::fstream oFile(fileName,std::ios::out);
+    char fileName[MAX_PATH] = "無題.map";
+    std::string buffer;
+    std::stringstream oss;
+
+    OPENFILENAME ofn; {
+        ZeroMemory(&ofn, sizeof(ofn));
+        ofn.lStructSize = sizeof(OPENFILENAME);
+        ofn.lpstrFilter = TEXT("マップデータ(*.map)\0*.map\0");
+        ofn.lpstrFile = fileName;
+        ofn.nMaxFile = MAX_PATH;
+        ofn.Flags = OFN_OVERWRITEPROMPT;
+        ofn.lpstrDefExt = TEXT("map");
+        ofn.lpstrDefExt;
+    }
+    if (GetSaveFileName(&ofn)) {
+        std::ofstream outputFile(fileName);
+        for (int x = 0; x < XSIZE; x++)
+        {
+            for (int z = 0; z < ZSIZE; z++)
+            {
+                oss << GetBlock(x, z) + ',';
+                oss << GetBlockHeight(x, z) + ',';
+            }
+        }
+
+        outputFile << oss.str();
+        outputFile.close();
+    }
+
+    /*std::fstream oFile("fileName.csv", std::ios::out);
 
     string outStr;
     for (int x = 0; x < XSIZE; x++) {
@@ -264,12 +278,7 @@ void Stage::Save(string fileName)
 
     oFile << outStr;
 
-    oFile.close();
-}
-
-void Stage::Save()
-{
-    Save("Assets/blockData.csv");
+    oFile.close();*/
 }
 
 void Stage::Load()
