@@ -256,8 +256,8 @@ void Stage::Save(HWND hWnd)
         {
             for (int z = 0; z < ZSIZE; z++)
             {
-                oss << GetBlock(x, z) + ',';
-                oss << GetBlockHeight(x, z) + ',';
+                oss << GetBlock(x, z);
+                oss << GetBlockHeight(x, z);
             }
         }
 
