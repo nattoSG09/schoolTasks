@@ -234,7 +234,6 @@ BOOL Stage::MenuProc(HWND hMenu, UINT msg, WPARAM wParam, LPARAM lParam)
         case ID_MENU_NEW:New(); return 0;
         case ID_MENU_SAVE:Save(); return 0;
         case ID_MENU_OPEN:Load(); return 0;
-        case ID_MENU_NAME_SAVE: PostQuitMessage(0); return 0;
         }
     }
     return 0;
