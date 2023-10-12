@@ -234,12 +234,14 @@ void Stage::New()
     }
 }
 
-void Stage::Save(HWND hWnd)
+void Stage::Save()
 {
     char fileName[MAX_PATH] = "無題.map";
     std::string buffer;
     std::stringstream oss;
 
+
+    //OPENFILENAME構造体を初期化
     OPENFILENAME ofn; {
         ZeroMemory(&ofn, sizeof(ofn));
         ofn.lStructSize = sizeof(OPENFILENAME);
@@ -248,62 +250,50 @@ void Stage::Save(HWND hWnd)
         ofn.nMaxFile = MAX_PATH;
         ofn.Flags = OFN_OVERWRITEPROMPT;
         ofn.lpstrDefExt = TEXT("map");
-        ofn.lpstrDefExt;
     }
+
+    //ファイルに保存
     if (GetSaveFileName(&ofn)) {
-        std::ofstream outputFile(fileName);
-        for (int x = 0; x < XSIZE; x++)
-        {
-            for (int z = 0; z < ZSIZE; z++)
-            {
-                oss << GetBlock(x, z);
-                oss << GetBlockHeight(x, z);
+        std::fstream outputFile(fileName,std::ios::binary | std::ios::out);
+        for (int x = 0; x < XSIZE; x++){
+            for (int z = 0; z < ZSIZE; z++) {
+                outputFile.write((char*)&table_[x][z], sizeof(BlockData));
+                //outputFile.write((char*)&table_[x][z].height_, sizeof(int));
             }
         }
-
-        outputFile << oss.str();
         outputFile.close();
     }
-
-    /*std::fstream oFile("fileName.csv", std::ios::out);
-
-    string outStr;
-    for (int x = 0; x < XSIZE; x++) {
-        for (int z = 0; z < ZSIZE; z++) {
-            outStr += (std::to_string(GetBlock(x, z)) + ',');
-            outStr += (std::to_string(GetBlockHeight(x, z))+',');
-        }
-        outStr += "\n";
-    }
-
-    oFile << outStr;
-
-    oFile.close();*/
 }
+
 
 void Stage::Load()
 {
-    std::fstream iFile("Assets/blockData.csv", std::ios::in);
+    char fileName[MAX_PATH] = "無題.map";
+    std::string buffer;
+    std::stringstream oss;
 
-    std::string line;
-    int x = 0, z = 0;
-
-    while (std::getline(iFile, line)) {
-        std::stringstream ss(line);
-        std::string cell;
-
-        while (std::getline(ss, cell, ',')) {
-            // CSVから読み取ったデータを適切な型に変換し、
-            SetBlock(x, z, std::stoi(cell));
-            std::getline(ss, cell, ',');
-            SetBlockHeight(x, z, std::stoi(cell));
-
-            z++; // 次の列に進む
-        }
-
-        x++; // 次の行に進む
-        z = 0; // 列をリセット
+    //OPENFILENAME構造体を初期化
+    OPENFILENAME ofn; {
+        ZeroMemory(&ofn, sizeof(ofn));
+        ofn.lStructSize = sizeof(OPENFILENAME);
+        ofn.lpstrFilter = TEXT("マップデータ(*.map)\0*.map\0");
+        ofn.lpstrFile = fileName;
+        ofn.nMaxFile = MAX_PATH;
+        ofn.Flags = OFN_FILEMUSTEXIST;
+        ofn.lpstrDefExt = TEXT("map");
+        ofn.lpstrDefExt;
     }
 
-    iFile.close();
+    //ファイルを開く
+    if (GetOpenFileName(&ofn)) {
+        std::fstream inputFile(fileName, std::ios::binary | std::ios::in);
+
+        for (int x = 0; x < XSIZE; x++) {
+            for (int z = 0; z < ZSIZE; z++) {
+                inputFile.read((char*)&table_[x][z], sizeof(BlockData));
+                //inputFile.read((char*)&table_[x][z].height_, sizeof(int));
+            }
+        }
+        inputFile.close();
+    }
 }

@@ -36,9 +36,11 @@ public:
 	BOOL DialogProc(HWND hDig, UINT msg, WPARAM wParam, LPARAM lParam);
 	void New();
 	
-	void Save(HWND hwnd);
+	void Save();
 	void Load();
 
+	BlockData GetBlockData(int x, int y) { return table_[x][y]; }
+	void SetBlockData(int x, int y, BlockData b) { table_[x][y] = b; }
 	/// <summary>
 	/// 指定した位置にブロックを設定する
 	/// </summary>

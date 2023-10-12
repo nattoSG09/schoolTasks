@@ -200,7 +200,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (wmId)
 		{
 		case ID_MENU_NEW:ps->New(); return 0;
-		case ID_MENU_SAVE:ps->Save(hWnd); return 0;
+		case ID_MENU_SAVE:ps->Save(); return 0;
 		case ID_MENU_OPEN:ps->Load(); return 0;
 		}
 		return 0;
