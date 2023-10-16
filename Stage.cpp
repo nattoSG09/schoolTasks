@@ -240,7 +240,6 @@ void Stage::Save()
     std::string buffer;
     std::stringstream oss;
 
-
     //OPENFILENAME構造体を初期化
     OPENFILENAME ofn; {
         ZeroMemory(&ofn, sizeof(ofn));
@@ -279,7 +278,6 @@ void Stage::Load()
         ofn.nMaxFile = MAX_PATH;
         ofn.Flags = OFN_FILEMUSTEXIST;
         ofn.lpstrDefExt = TEXT("map");
-        ofn.lpstrDefExt;
     }
 
     //ファイルを開く
