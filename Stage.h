@@ -24,6 +24,9 @@ private:
 		int height_;
 	}table_[XSIZE][ZSIZE];
 
+	// 変更前のテーブルの状態を保存する変数
+	BlockData prevTable_[XSIZE][ZSIZE];
+
 	int mode_;		//0:上げる,1:下げる,2:変える
 	int select_;	//種類
 public:
@@ -38,6 +41,8 @@ public:
 	
 	void Save();
 	void Load();
+
+	void UndoChanges();
 
 	BlockData GetBlockData(int x, int y) { return table_[x][y]; }
 	void SetBlockData(int x, int y, BlockData b) { table_[x][y] = b; }

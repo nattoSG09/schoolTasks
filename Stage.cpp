@@ -47,6 +47,12 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
+    
+
+    if (Input::IsKey(DIK_LCONTROL) && Input::IsKeyDown(DIK_Z)) {
+        UndoChanges();
+    }
+
     //できなかったやつ
     {
         //if (!Input::IsMouseButtonDown(0))return;
@@ -109,6 +115,10 @@ void Stage::Update()
     if (!Input::IsMouseButtonDown(0)) {
         return;
     }
+
+    // 変更前のテーブルの状態を保存
+    memcpy(prevTable_, table_, sizeof(table_));
+
     float w = (float)(Direct3D::scrWidth_ / 2.0f);
     float h = (float)(Direct3D::scrHeight_ / 2.0f);
     //Offsetx,y は0
@@ -290,4 +300,10 @@ void Stage::Load()
         }
         inputFile.close();
     }
+}
+
+void Stage::UndoChanges()
+{
+    // 変更前のテーブルの状態を現在のテーブルに戻す
+    memcpy(table_, prevTable_, sizeof(table_));
 }
