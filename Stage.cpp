@@ -47,10 +47,11 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
-    
     if (Input::IsKey(DIK_LCONTROL) && Input::IsKeyDown(DIK_Z)) {
-        UndoChanges();
+        //•œŒ³ˆ—
+        RestoreMemento(saveMemento_);
     }
+
 
     //‚Å‚«‚È‚©‚Á‚½‚â‚Â
     {

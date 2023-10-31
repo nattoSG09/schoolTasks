@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include <Windows.h>
-
+#include "Memento.h"
 
 namespace {
 	const int MODEL_NUM{ 5 };
@@ -12,6 +12,10 @@ namespace {
 		DEFAULT, BRICK, GRASS, SAND, WATER, MAX,
 	};
 	
+	struct BlockData{
+		int type_;
+		int height_;
+	};
 }
 
 class Stage : public GameObject
@@ -19,13 +23,12 @@ class Stage : public GameObject
 private:
 	int hModel_[MAX];
 
-	struct BlockData {
-		int type_;
-		int height_;
-	}table_[XSIZE][ZSIZE];
+	BlockData table_[XSIZE][ZSIZE];
 
 	// 変更前のテーブルの状態を保存する変数
 	BlockData prevTable_[XSIZE][ZSIZE];
+
+	Memento saveMemento_;
 
 	int mode_;		//0:上げる,1:下げる,2:変える
 	int select_;	//種類
@@ -63,5 +66,30 @@ public:
 	/// <param name="_height">高さ</param>
 	void SetBlockHeight(int x,int z,int _height){ table_[x][z].height_ = _height; }
 	int GetBlockHeight(int x, int z) { return table_[x][z].height_; }
+
+
+// Memento
+	Memento CreateMemento() const {
+		BlockData copiedTable[XSIZE][ZSIZE];
+		for (int x = 0; x < XSIZE; ++x) {
+			for (int z = 0; z < ZSIZE; ++z) {
+				copiedTable[x][z] = table_[x][z];
+			}
+		}
+		return Memento(copiedTable);
+	}
+
+	void RestoreMemento(const Memento& memento) {
+		for (int x = 0; x < XSIZE; ++x) {
+			for (int z = 0; z < ZSIZE; ++z) {
+				table_[x][z] = memento.GetState(x, z);
+			}
+		}
+	}
+
+	void SaveMemento()
+	{
+		saveMemento_ = CreateMemento();
+	}
 };
 
